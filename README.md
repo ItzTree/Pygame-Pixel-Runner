@@ -1,1 +1,1 @@
-# Pygame-Pixel-Runner
+# Pixel Runner

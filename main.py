@@ -107,9 +107,8 @@ screen = pygame.display.set_mode((800, 400))
 pygame.display.set_caption("Runner")
 
 # Path of File
-current_path = os.path.dirname(__file__)
 def load_path(file_name) :
-    return os.path.join(current_path, file_name)
+    return os.path.join(os.path.abspath('.'), file_name)
 
 # System Settings
 clock = pygame.time.Clock()

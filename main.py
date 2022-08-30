@@ -9,17 +9,17 @@ class Player(pygame.sprite.Sprite) :
     def __init__(self) :
         super().__init__()
         
-        player_walk_1 = pygame.image.load(load_path('graphics/player/player_walk_1.png')).convert_alpha()
-        player_walk_2 = pygame.image.load(load_path('graphics/player/player_walk_2.png')).convert_alpha()
+        player_walk_1 = load_path_image('graphics/player/player_walk_1.png').convert_alpha()
+        player_walk_2 = load_path_image('graphics/player/player_walk_2.png').convert_alpha()
         self.player_walk = [player_walk_1, player_walk_2]
         self.player_index = 0
-        self.player_jump = pygame.image.load(load_path('graphics/player/jump.png')).convert_alpha()
+        self.player_jump = load_path_image('graphics/player/jump.png').convert_alpha()
 
         self.image = self.player_walk[self.player_index]
         self.rect = self.image.get_rect(midbottom = (80, 300))
         self.gravity = 0
         
-        self.jump_sound = pygame.mixer.Sound(load_path('audio/jump.mp3'))
+        self.jump_sound = load_path_sound('audio/jump.mp3')
         self.jump_sound.set_volume(0.3)
     
     def player_input(self) :
@@ -53,13 +53,13 @@ class Obstacle(pygame.sprite.Sprite) :
         super().__init__()
         
         if type == 'fly' :
-            fly_frame_1 = pygame.image.load(load_path('graphics/fly/fly1.png')).convert_alpha()
-            fly_frame_2 = pygame.image.load(load_path('graphics/fly/fly2.png')).convert_alpha()
+            fly_frame_1 = load_path_image('graphics/fly/fly1.png').convert_alpha()
+            fly_frame_2 = load_path_image('graphics/fly/fly2.png').convert_alpha()
             self.frames = [fly_frame_1, fly_frame_2]
             y_pos = 210
         else :
-            snail_frame_1 = pygame.image.load(load_path('graphics/snail/snail1.png')).convert_alpha()
-            snail_frame_2 = pygame.image.load(load_path('graphics/snail/snail2.png')).convert_alpha()
+            snail_frame_1 = load_path_image('graphics/snail/snail1.png').convert_alpha()
+            snail_frame_2 = load_path_image('graphics/snail/snail2.png').convert_alpha()
             self.frames = [snail_frame_1, snail_frame_2]
             y_pos = 300
         
@@ -108,19 +108,37 @@ pygame.display.set_caption("Runner")
 
 # Path of File
 current_path = os.path.dirname(__file__)
-def load_path(file_name) :
+def load_path_image(file_name) :
     try :
-        return os.path.join(os.path.abspath('.'), file_name)
-    except FileNotFoundError :
-        return os.path.join(current_path, file_name)
+        return_path = os.path.join(os.path.abspath('.'), file_name)
+        return pygame.image.load(return_path)
+    except :
+        return_path = os.path.join(current_path, file_name)
+        return pygame.image.load(return_path)
+
+def load_path_font(file_name, font_size) :
+    try :
+        return_path = os.path.join(os.path.abspath('.'), file_name)
+        return pygame.font.Font(return_path, font_size)
+    except :
+        return_path = os.path.join(current_path, file_name)
+        return pygame.font.Font(return_path, font_size)
+
+def load_path_sound(file_name) :
+    try :
+        return_path = os.path.join(os.path.abspath('.'), file_name)
+        return pygame.mixer.Sound(return_path)
+    except :
+        return_path = os.path.join(current_path, file_name)
+        return pygame.mixer.Sound(return_path)
 
 # System Settings
 clock = pygame.time.Clock()
-test_font = pygame.font.Font(load_path('font/Pixeltype.ttf'), 50)
+test_font = load_path_font('font/Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
 score = 0
-bgm = pygame.mixer.Sound(load_path('audio/music.wav'))
+bgm = load_path_sound('audio/music.wav')
 bgm.play(loops = -1)
 
 
@@ -133,11 +151,11 @@ obstacle_group = pygame.sprite.Group()
 
 ''' Images '''
 # Backgrounds
-sky_surface = pygame.image.load(load_path('graphics/Sky.png')).convert()
-ground_surface = pygame.image.load(load_path('graphics/ground.png')).convert()
+sky_surface = load_path_image('graphics/Sky.png').convert()
+ground_surface = load_path_image('graphics/ground.png').convert()
 
 # Intro Screen
-player_stand = pygame.image.load(load_path('graphics/player/player_stand.png')).convert_alpha()
+player_stand = load_path_image('graphics/player/player_stand.png').convert_alpha()
 player_stand = pygame.transform.rotozoom(player_stand, 0, 2)
 player_stand_rect = player_stand.get_rect(center = (400, 200))
 
